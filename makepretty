@@ -1,0 +1,25 @@
+sf_version_req=0.24.3
+sf_version="$(swiftformat -v)"
+if [[ ! $? || $sf_version != *"${sf_version_req}"* ]]; then
+	echo "swiftformat (${sf_version_req}) is required. Install via homebrew"
+	exit 1
+fi
+
+swiftformat \
+--indent 2 \
+--allman false \
+--linebreaks lf \
+--commas inline \
+--empty void \
+--ranges spaced \
+--trimwhitespace always \
+--semicolons inline \
+--wraparguments afterfirst \
+--wrapelements beforefirst \
+--hexliteralcase lowercase \
+--ifdef indent \
+--insertlines enabled \
+--removelines disabled \
+--disable consecutiveSpaces,consecutiveBlankLines,elseOnSameLine,trailingCommas,void,unusedArguments,redundantVoidReturnType \
+Sources/ TestSources/ iOSHost/ macOSHost/ tvOSHost/
+

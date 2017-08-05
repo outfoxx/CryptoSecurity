@@ -1,0 +1,9 @@
+language: objective-c
+osx_image: xcode9
+script:
+  - xcrun xcodebuild -project CryptoSecurity.xcodeproj -scheme CryptoSecurity-macOS build test
+  - xcrun xcodebuild -project CryptoSecurity.xcodeproj -scheme CryptoSecurity-iOS build test
+  - xcrun xcodebuild -project CryptoSecurity.xcodeproj -scheme CryptoSecurity-tvOS build test
+  - xcrun xcodebuild -project CryptoSecurity.xcodeproj -scheme CryptoSecurity-watchOS build
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
