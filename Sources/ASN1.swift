@@ -36,7 +36,7 @@ public protocol ASN1Item {
 
 public struct ASN1Boolean: ASN1Item, Equatable {
 
-  let value: Bool
+  public let value: Bool
 
   public func encode(encoder: ASN1Encoder) {
     encoder.encode(boolean: value)
@@ -51,7 +51,7 @@ public struct ASN1Boolean: ASN1Item, Equatable {
 
 public struct ASN1Integer: ASN1Item, Equatable {
 
-  let value: Data
+  public let value: Data
 
   public func encode(encoder: ASN1Encoder) {
     encoder.encode(integer: value)
@@ -132,8 +132,8 @@ public struct ASN1Integer: ASN1Item, Equatable {
 
 public struct ASN1BitString: ASN1Item, Equatable {
 
-  let value: Data
-  let length: Int
+  public let value: Data
+  public let length: Int
 
   public func encode(encoder: ASN1Encoder) {
     encoder.encode(bitString: value, bitLength: length)
@@ -187,7 +187,7 @@ public struct ASN1BitString: ASN1Item, Equatable {
 
 public struct ASN1OctetString: ASN1Item, Equatable {
 
-  let value: Data
+  public let value: Data
 
   public func encode(encoder: ASN1Encoder) {
     encoder.encode(octetString: value)
@@ -215,7 +215,7 @@ public struct ASN1Null: ASN1Item, Equatable {
 
 public struct ASN1ObjectIdentifier: ASN1Item, Equatable {
 
-  let value: [UInt64]
+  public let value: [UInt64]
 
   public func encode(encoder: ASN1Encoder) {
     encoder.encode(objectIdentifier: value)
@@ -279,7 +279,7 @@ public struct ASN1IA5String: ASN1Item, ASN1String, Equatable {
 
 public struct ASN1Sequence: ASN1Item, Equatable {
 
-  let value: Array<ASN1Item>
+  public let value: Array<ASN1Item>
 
   public func encode(encoder: ASN1Encoder) {
     encoder.encode(sequence: value)
@@ -297,7 +297,7 @@ public struct ASN1Sequence: ASN1Item, Equatable {
 
 public struct ASN1Set: ASN1Item, Equatable {
 
-  let value: Array<ASN1Item>
+  public let value: Array<ASN1Item>
 
   public func encode(encoder: ASN1Encoder) {
     encoder.encode(set: value)
@@ -315,7 +315,7 @@ public struct ASN1Set: ASN1Item, Equatable {
 
 public struct ASN1UTCTime: ASN1Item, Equatable {
 
-  let timestamp: Date
+  public let timestamp: Date
 
   public func encode(encoder: ASN1Encoder) {
     encoder.encode(utcTime: timestamp)
@@ -330,8 +330,8 @@ public struct ASN1UTCTime: ASN1Item, Equatable {
 
 public struct ASN1Object: ASN1Item, Equatable {
 
-  let tag: UInt8
-  let data: Data
+  public let tag: UInt8
+  public let data: Data
 
   public func encode(encoder: ASN1Encoder) {
     encoder.encode(tag: tag, data: data)
@@ -466,6 +466,10 @@ public struct ASN1 {
 
   public static func octetString(of value: Data) -> ASN1OctetString {
     return ASN1OctetString(value: value)
+  }
+
+  public static func octetString<T>(of value: T) -> ASN1OctetString {
+    return ASN1OctetString(value: toData(value))
   }
 
   public static func utf8String(of value: String) -> ASN1UTF8String {
