@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = 'CryptoSecurity'
-  spec.version      = '1.0'
+  spec.version      = '1.1'
 
   spec.license      = { :type => 'MIT', :file => 'LICENSE.txt' }
 
