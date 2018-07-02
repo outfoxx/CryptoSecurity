@@ -249,7 +249,7 @@
 		AA930EC11F2219DD00A9F82F /* Hmac.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Hmac.h; sourceTree = "<group>"; };
 		AA930EC21F2219DD00A9F82F /* Hmac.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Hmac.m; sourceTree = "<group>"; };
 		AA930EC71F2296AC00A9F82F /* HmacTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HmacTests.swift; sourceTree = "<group>"; };
-		AA97A6E11DA0B91C00897AEE /* CryptoSecurity.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = CryptoSecurity.podspec; sourceTree = "<group>"; };
+		AA97A6E11DA0B91C00897AEE /* CryptoSecurity.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = CryptoSecurity.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		AABEABAA1D893E64002A1D99 /* CryptoSecurity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CryptoSecurity.h; sourceTree = "<group>"; };
 		AAF1ED5F1F3563C40037F1F5 /* CryptoSecurity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CryptoSecurity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAF1ED621F3563C40037F1F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1211,7 +1211,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/macOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = io.outfoxx.CryptoSecurity;
 				PRODUCT_NAME = CryptoSecurity;
 				SDKROOT = macosx;
@@ -1234,7 +1234,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/macOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = io.outfoxx.CryptoSecurity;
 				PRODUCT_NAME = CryptoSecurity;
 				SDKROOT = macosx;
@@ -1590,6 +1590,7 @@
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
@@ -1614,6 +1615,7 @@
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
