@@ -393,6 +393,65 @@ func !=(lhs: ASN1Item, rhs: ASN1Item) -> Bool {
 public struct ASN1 {
 
   /**
+   Native value wrapping methods
+   **/
+
+  public static func item(wrapping value: Any?) -> ASN1Item {
+    guard let value = value else {
+      return null()
+    }
+    switch value {
+    case let it as ASN1Item:
+      return it
+    case let it as [ASN1Item]:
+      return sequence(of: it)
+    case let it as String:
+      return utf8String(of: it)
+    case let it as Bool:
+      return boolean(of: it)
+    case let it as Data:
+      return octetString(of: it)
+    case let it as Date:
+      return utcTime(of: it)
+    case let it as [UInt64]:
+      return oid(of: it)
+    case let it as Int:
+      return integer(of: toData(it))
+    case let it as UInt:
+      return integer(of: toData(it))
+    case let it as Int8:
+      return integer(of: toData(it))
+    case let it as UInt8:
+      return integer(of: toData(it))
+    case let it as Int16:
+      return integer(of: toData(it))
+    case let it as UInt16:
+      return integer(of: toData(it))
+    case let it as Int32:
+      return integer(of: toData(it))
+    case let it as UInt32:
+      return integer(of: toData(it))
+    case let it as Int64:
+      return integer(of: toData(it))
+    case let it as UInt64:
+      return integer(of: toData(it))
+    case let it as BitSet:
+      return bitString(of: it)
+    default:
+      fatalError("Unsupported type")
+    }
+  }
+
+  public static func sequence(wrapping values: [Any?]) -> ASN1Sequence {
+    return sequence(of: values.map { item(wrapping: $0) })
+  }
+
+  public static func set(wrapping values: [Any?]) -> ASN1Set {
+    return set(of: values.map { item(wrapping: $0) })
+  }
+
+
+  /**
    Item factory methods
    **/
 
@@ -500,8 +559,12 @@ public struct ASN1 {
     return ASN1UTCTime(timestamp: value)
   }
 
-  public static func oid(of values: UInt64...) -> ASN1ObjectIdentifier {
+  public static func oid(of values: [UInt64]) -> ASN1ObjectIdentifier {
     return ASN1ObjectIdentifier(value: values)
+  }
+
+  public static func oid(of values: UInt64...) -> ASN1ObjectIdentifier {
+    return oid(of: values)
   }
 
 
@@ -529,6 +592,7 @@ public struct ASN1 {
       return tag | 0xa0
     }
 
+    private init() {}
   }
 
 
@@ -537,6 +601,14 @@ public struct ASN1 {
    **/
 
   public struct DER {
+
+    public static func encode(wrapping values: Any?...) -> Data {
+      return encode(wrapping: values)
+    }
+
+    public static func encode(wrapping values: [Any?]) -> Data {
+      return encode(items: values.map { ASN1.item(wrapping: $0) })
+    }
 
     public static func encode(items: ASN1Item...) -> Data {
       return encode(items: items)
@@ -873,7 +945,11 @@ public struct ASN1 {
       return length
     }
 
+    private init() {}
+
   }
+
+  private init() {}
 
 }
 
