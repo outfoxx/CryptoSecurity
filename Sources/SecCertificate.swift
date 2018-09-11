@@ -159,6 +159,90 @@ public extension SecCertificate {
     }
   }
 
+  public static func load(resourceName: String, inDirectory dir: String? = nil, in bundle: Bundle? = nil) throws -> [SecCertificate]? {
+
+    let bundle = bundle ?? Bundle.main
+
+    if let loaded = try loadDER(resourceName: resourceName, inDirectory: dir, in: bundle) {
+      return [loaded]
+    }
+
+    if let loaded = try loadPEM(resourceName: resourceName, inDirectory: dir, in: bundle) {
+      return loaded
+    }
+
+    return nil
+  }
+
+  public static func loadDER(resourceName: String, inDirectory dir: String? = nil, in bundle: Bundle? = nil) throws -> SecCertificate? {
+
+    let bundle = bundle ?? Bundle.main
+
+    guard let certURL = bundle.url(forResource: resourceName, withExtension: "crt", subdirectory: dir) else {
+      return nil
+    }
+
+    guard
+      let certData = try? Data(contentsOf: certURL),
+      let cert = SecCertificateCreateWithData(nil, certData as CFData)
+    else {
+      throw SecCertificateError.loadFailed
+    }
+
+    return cert
+  }
+
+  public static func loadPEM(resourceName: String, inDirectory dir: String? = nil, in bundle: Bundle? = nil) throws -> [SecCertificate]? {
+
+    let bundle = bundle ?? Bundle.main
+
+    guard let certsURL = bundle.url(forResource: resourceName, withExtension: "pem", subdirectory: dir) else {
+      return nil
+    }
+
+    guard
+      let certsData = try? Data(contentsOf: certsURL),
+      let certsPEM = String(data: certsData, encoding: .utf8)
+    else {
+      throw SecCertificateError.loadFailed
+    }
+
+    var certs = [SecCertificate]()
+
+    // swiftlint:disable:next force_try
+    let regex = try! NSRegularExpression(pattern: "-----BEGIN CERTIFICATE-----\\s*([a-zA-Z0-9\\s/+]+=*)\\s*-----END CERTIFICATE-----", options: [])
+    var error : Error? = nil
+
+    regex.enumerateMatches(in: certsPEM, options: [], range: NSRange(location: 0, length: certsPEM.count)) { result, _, stop in
+
+      let result = result!
+      let captured = result.range(at: 1)
+
+      guard
+        let range = Range(captured, in: certsPEM),
+        let certData = NSData(base64Encoded: String(certsPEM[range]), options: [.ignoreUnknownCharacters])
+      else {
+        error = SecCertificateError.loadFailed
+        stop.pointee = true
+        return
+      }
+
+      guard let cert = SecCertificateCreateWithData(nil, certData) else {
+        error = SecCertificateError.loadFailed
+        stop.pointee = true
+        return
+      }
+
+      certs.append(cert)
+    }
+
+    if let error = error {
+      throw error
+    }
+
+    return certs
+  }
+
 }
 
 
