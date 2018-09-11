@@ -26,9 +26,10 @@ public struct X509 {
       ASN1.integer(of: serialNumber),
       ASN1.sequence(of: OID.sha256WithRSAEncryption, ASN1.null()),
       X501.encode(name: issuer),
-      ASN1.sequence(of:
+      ASN1.sequence(of: [
         ASN1.utcTime(of: notBefore),
-                    ASN1.utcTime(of: notAfter)),
+        ASN1.utcTime(of: notAfter)
+      ]),
       X501.encode(name: subject),
       subjectPublicKeyInfo(encryptionOID: OID.rsaEncryption, publicKey: publicKey)
     ]
@@ -71,12 +72,11 @@ public struct X509 {
 
   public static func keyUsageExtension(keyUsage: UInt32) -> ASN1Sequence {
 
-    return ASN1.sequence(of:
+    return ASN1.sequence(of: [
       OID.extensionKeyUsage,
-                         ASN1.boolean(of: true),
-                         ASN1.octetString(of:
-        ASN1.DER.encode(items:
-          ASN1.bitString(of: BitSet(value: keyUsage)))))
+      ASN1.boolean(of: true),
+      ASN1.octetString(of: ASN1.DER.encode(items: ASN1.bitString(of: BitSet(value: keyUsage))))
+    ])
   }
 
 }

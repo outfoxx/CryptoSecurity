@@ -173,7 +173,7 @@ public extension SecCertificate {
       self.rawValue = rawValue
     }
 
-    // See: https://tools.ietf.org/html/rfc5280#section-4.2.1.3s
+    // See: https://tools.ietf.org/html/rfc5280#section-4.2.1.3
     public static let unspecified        = SecKeyUsage(rawValue: 0)
     public static let digitalSignature   = SecKeyUsage(rawValue: 1 << 0)
     public static let nonRepudiation     = SecKeyUsage(rawValue: 1 << 1)
@@ -307,10 +307,12 @@ public class SecCertificateFactory {
     }
 
     return ASN1.DER.encode(items:
-      ASN1.sequence(of:
+      ASN1.sequence(of: [
         certificateInfo,
-                    ASN1.sequence(of: signingOid, ASN1.null()),
-                    ASN1.bitString(of: signature)))
+        ASN1.sequence(of: [signingOid, ASN1.null()]),
+        ASN1.bitString(of: signature)
+      ])
+    )
   }
 
 }
