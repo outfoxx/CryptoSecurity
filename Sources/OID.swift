@@ -16,6 +16,8 @@ public struct OID {
   public static let commonName                = ASN1.oid(of: 2, 5, 4, 3)
   public static let serialNumber              = ASN1.oid(of: 2, 5, 4, 5)
   public static let countryName               = ASN1.oid(of: 2, 5, 4, 6)
+  public static let localityName              = ASN1.oid(of: 2, 5, 4, 7)
+  public static let stateOrProvinceName       = ASN1.oid(of: 2, 5, 4, 8)
   public static let organizationName          = ASN1.oid(of: 2, 5, 4, 10)
   public static let organizationUnitName      = ASN1.oid(of: 2, 5, 4, 11)
   public static let userId                    = ASN1.oid(of: 0, 9, 2342, 19_200_300, 100, 1, 1)
@@ -35,6 +37,10 @@ public struct OID {
       return OID.commonName
     case "C":
       return OID.countryName
+    case "L":
+      return OID.localityName
+    case "ST":
+      return OID.stateOrProvinceName
     case "O":
       return OID.organizationName
     case "OU":
@@ -58,6 +64,14 @@ public struct OID {
       return "C"
     }
 
+    if oid.value == localityName.value {
+        return "L"
+    }
+    
+    if oid.value == stateOrProvinceName.value {
+        return "ST"
+    }
+    
     if oid.value == organizationName.value {
       return "O"
     }
