@@ -10,9 +10,11 @@ Pod::Spec.new do |spec|
   spec.homepage     = 'https://github.com/outfoxx/cryptosecurity'
 
   spec.summary      = 'Crypto & Securty framework wrappers for Swift, along with ASN.1 and X.509 utilities.'
-  spec.source       = { :git => 'https://github.com/outfoxx/CryptoSecurity.git', :tag => '1.0' }
+  spec.source       = { :git => 'https://github.com/outfoxx/CryptoSecurity.git', :tag => '1.1' }
   spec.source_files = 'Sources/*.{h,m,swift}'
   spec.framework    = 'Security'
+
+  spec.swift_version = '4.2'
 
   spec.ios.deployment_target = '8.0'
   spec.osx.deployment_target = '10.10'
