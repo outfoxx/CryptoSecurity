@@ -41,14 +41,14 @@ public enum SecIdentityError: Int, Error {
 
 public extension SecIdentity {
 
-  public static func load(certificate: SecCertificate) throws -> SecIdentity {
+  static func load(certificate: SecCertificate) throws -> SecIdentity {
 
     let attrs = try certificate.attributes()
 
     let query: [String: Any] = [
       kSecClass as String: kSecClassIdentity,
       kSecAttrLabel as String: attrs[kSecAttrLabel as String]!,
-      kSecReturnRef as String: kCFBooleanTrue
+      kSecReturnRef as String: kCFBooleanTrue!
     ]
 
     var result: CFTypeRef?
@@ -62,7 +62,7 @@ public extension SecIdentity {
     return result as! SecIdentity
   }
 
-  public func privateKey() throws -> SecKey {
+  func privateKey() throws -> SecKey {
 
     var key: SecKey?
     let status = SecIdentityCopyPrivateKey(self, &key)
@@ -73,7 +73,7 @@ public extension SecIdentity {
     return key!
   }
 
-  public func certificate() throws -> SecCertificate {
+  func certificate() throws -> SecCertificate {
 
     var crt: SecCertificate?
     let status = SecIdentityCopyCertificate(self, &crt)

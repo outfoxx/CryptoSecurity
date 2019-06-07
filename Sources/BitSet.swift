@@ -203,21 +203,9 @@ public struct BitSet {
 extension BitSet: Equatable {
 }
 
-public func == (lhs: BitSet, rhs: BitSet) -> Bool {
-  return lhs.bytes == rhs.bytes
-}
-
 // MARK: - Hashing
 
 extension BitSet: Hashable {
-  /* Based on the hashing code from Java's BitSet. */
-  public var hashValue: Int {
-    var h = Int(1234)
-    for i in stride(from: bytes.count, to: 0, by: -1) {
-      h ^= Int(bytes[i - 1]) &* Int(i)
-    }
-    return (h >> 32) ^ h
-  }
 }
 
 // MARK: - Bitwise operations

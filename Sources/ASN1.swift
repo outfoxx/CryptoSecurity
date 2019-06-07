@@ -59,7 +59,7 @@ public struct ASN1Integer: ASN1Item, Equatable {
 
   var intValue: Int64 {
 
-    return value.withUnsafeBytes { (ptr: UnsafePointer<UInt8>) -> Int64 in
+    return value.withUnsafeBytes { (ptr: UnsafeRawBufferPointer) -> Int64 in
 
       switch value.count {
       case 0:
@@ -473,7 +473,8 @@ public struct ASN1 {
 
   public static func integer(of value: Data) -> ASN1Integer {
 
-    return value.withUnsafeBytes { (ptr: UnsafePointer<UInt8>) -> ASN1Integer in
+    return value.withUnsafeBytes { (raw: UnsafeRawBufferPointer) -> ASN1Integer in
+      let ptr = raw.baseAddress!.assumingMemoryBound(to: UInt8.self)
 
       var nonZero = ptr
       while nonZero.pointee == 0 && ptr.distance(to: nonZero) < value.count - 1 {
@@ -623,8 +624,8 @@ public struct ASN1 {
     }
 
     public static func decode(data: Data) -> ASN1Item {
-      return data.withUnsafeBytes { (ptr: UnsafePointer<UInt8>) in
-        var ptr = ptr
+      return data.withUnsafeBytes { (raw: UnsafeRawBufferPointer) in
+        var ptr = raw.baseAddress!.assumingMemoryBound(to: UInt8.self)
         return parse(item: &ptr)
       }
     }

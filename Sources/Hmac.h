@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 extern NSString *const HmacErrorDomain;
 
 
-typedef NS_ENUM(NSUInteger, HmacAlgorithm) {
+typedef NS_ENUM(UInt32, HmacAlgorithm) {
   HmacAlgorithmSHA1,
   HmacAlgorithmMD5,
   HmacAlgorithmSHA256,
