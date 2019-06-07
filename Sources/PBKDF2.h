@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 extern NSString *const PBKDF2ErrorDomain;
 
 
-typedef NS_ENUM(NSUInteger, PBKDF2HmacAlgorithm) {
+typedef NS_ENUM(UInt32, PBKDF2HmacAlgorithm) {
   PBKDF2HmacAlgorithmSHA1   = 1,
   PBKDF2HmacAlgorithmSHA224 = 2,
   PBKDF2HmacAlgorithmSHA256 = 3,

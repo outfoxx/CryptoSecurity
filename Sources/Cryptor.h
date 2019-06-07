@@ -35,7 +35,7 @@ BOOL CryptorAlgorithmIsValidKeySize(CryptorAlgorithm algorithm, NSUInteger keySi
 NSUInteger CryptorAlgorithmBlockSize(CryptorAlgorithm algorithm);
 
 
-typedef NS_OPTIONS(NSUInteger, CryptorOptions) {
+typedef NS_OPTIONS(UInt32, CryptorOptions) {
   CryptorOptionsPKCS7Padding  = 1 << 0,
   CryptorOptionsECBMode       = 1 << 1,
 };
