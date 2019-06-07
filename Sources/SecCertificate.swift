@@ -24,7 +24,7 @@ public enum SecCertificateError: Int, Error {
 
 public extension SecCertificate {
 
-  public static func from(data: Data) throws -> SecCertificate {
+  static func from(data: Data) throws -> SecCertificate {
     guard let cert = SecCertificateCreateWithData(nil, data as CFData) else {
       throw SecCertificateError.parsingFailed
     }
@@ -35,7 +35,7 @@ public extension SecCertificate {
     return (ASN1.DER.decode(data: derEncoded) as! ASN1Sequence).value[0] as! ASN1Sequence
   }
 
-  public var issuerName: X501Name? {
+  var issuerName: X501Name? {
     let issuerSeq: ASN1Sequence
     if #available(iOS 10.3, OSX 10.12.4, tvOS 10.3, watchOS 3.3, *) {
       guard
@@ -52,7 +52,7 @@ public extension SecCertificate {
     return X501.decode(sequence: issuerSeq)
   }
 
-  public var subjectName: X501Name? {
+  var subjectName: X501Name? {
     let subjectSeq: ASN1Sequence
     if #available(iOS 10.3, OSX 10.12.4, tvOS 10.3, watchOS 3.3, *) {
       guard
@@ -69,7 +69,7 @@ public extension SecCertificate {
     return X501.decode(sequence: subjectSeq)
   }
 
-  public func publicKeyValidated(trustedCertificates: [SecCertificate]) throws -> SecKey {
+  func publicKeyValidated(trustedCertificates: [SecCertificate]) throws -> SecKey {
 
     let policy = SecPolicyCreateBasicX509()
 
@@ -104,16 +104,16 @@ public extension SecCertificate {
     return key
   }
 
-  public var derEncoded: Data {
+  var derEncoded: Data {
     return SecCertificateCopyData(self) as Data
   }
 
-  public func attributes() throws -> [String: Any] {
+  func attributes() throws -> [String: Any] {
 
     #if os(iOS) || os(watchOS) || os(tvOS)
 
       let query = [
-        kSecReturnAttributes as String: kCFBooleanTrue,
+        kSecReturnAttributes as String: kCFBooleanTrue!,
         kSecValueRef as String: self
       ] as CFDictionary
 
@@ -127,7 +127,7 @@ public extension SecCertificate {
     #elseif os(macOS)
 
       let query: [String: Any] = [
-        kSecReturnAttributes as String: kCFBooleanTrue,
+        kSecReturnAttributes as String: kCFBooleanTrue!,
         kSecUseItemList as String: [self] as CFArray
       ]
 
@@ -143,7 +143,7 @@ public extension SecCertificate {
     return data as! [String: Any]
   }
 
-  public func save() throws {
+  func save() throws {
 
     let query = [
       kSecClass as String: kSecClassCertificate,
@@ -159,7 +159,7 @@ public extension SecCertificate {
     }
   }
 
-  public static func load(resourceName: String, inDirectory dir: String? = nil, in bundle: Bundle? = nil) throws -> [SecCertificate]? {
+  static func load(resourceName: String, inDirectory dir: String? = nil, in bundle: Bundle? = nil) throws -> [SecCertificate]? {
 
     let bundle = bundle ?? Bundle.main
 
@@ -174,7 +174,7 @@ public extension SecCertificate {
     return nil
   }
 
-  public static func loadDER(resourceName: String, inDirectory dir: String? = nil, in bundle: Bundle? = nil) throws -> SecCertificate? {
+  static func loadDER(resourceName: String, inDirectory dir: String? = nil, in bundle: Bundle? = nil) throws -> SecCertificate? {
 
     let bundle = bundle ?? Bundle.main
 
@@ -192,7 +192,7 @@ public extension SecCertificate {
     return cert
   }
 
-  public static func loadPEM(resourceName: String, inDirectory dir: String? = nil, in bundle: Bundle? = nil) throws -> [SecCertificate]? {
+  static func loadPEM(resourceName: String, inDirectory dir: String? = nil, in bundle: Bundle? = nil) throws -> [SecCertificate]? {
 
     let bundle = bundle ?? Bundle.main
 
@@ -311,6 +311,8 @@ public class SecCertificateRequestFactory {
       signingOid = OID.sha384WithRSAEncryption
     case .SHA512:
       signingOid = OID.sha512WithRSAEncryption
+    @unknown default:
+      fatalError("unsupported signing algorithm")
     }
 
     return ASN1.DER.encode(items:
@@ -388,6 +390,8 @@ public class SecCertificateFactory {
       signingOid = OID.sha384WithRSAEncryption
     case .SHA512:
       signingOid = OID.sha512WithRSAEncryption
+    @unknown default:
+      fatalError("unsupported signing algorithm")
     }
 
     return ASN1.DER.encode(items:

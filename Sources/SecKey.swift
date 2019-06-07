@@ -42,11 +42,11 @@ public enum SecEncryptionPadding {
 
 public extension SecKey {
 
-  public func persistentReference() throws -> Data {
+  func persistentReference() throws -> Data {
 
     let query: [String: Any] = [
       kSecValueRef as String: self,
-      kSecReturnPersistentRef as String: kCFBooleanTrue
+      kSecReturnPersistentRef as String: kCFBooleanTrue!
     ]
 
     var ref: CFTypeRef?
@@ -57,11 +57,11 @@ public extension SecKey {
     return ref as! Data
   }
 
-  public static func load(persistentReference pref: Data) throws -> SecKey {
+  static func load(persistentReference pref: Data) throws -> SecKey {
 
     let query: [String: Any] = [
       kSecValuePersistentRef as String: pref,
-      kSecReturnRef as String: kCFBooleanTrue
+      kSecReturnRef as String: kCFBooleanTrue!
     ]
 
     var ref: CFTypeRef?
@@ -72,7 +72,7 @@ public extension SecKey {
     return ref as! SecKey
   }
 
-  public static func decode(fromData data: Data, type: CFString, class keyClass: CFString) throws -> SecKey {
+  static func decode(fromData data: Data, type: CFString, class keyClass: CFString) throws -> SecKey {
 
     #if os(iOS) || os(watchOS) || os(tvOS)
 
@@ -98,8 +98,8 @@ public extension SecKey {
         kSecAttrKeyClass as String: keyClass,
         kSecAttrKeyType as String: Int(type as String)! as CFNumber,
         kSecAttrApplicationTag as String: try Random.generateBytes(ofSize: 32),
-        kSecReturnRef as String: kCFBooleanTrue,
-        kSecReturnPersistentRef as String: kCFBooleanTrue,
+        kSecReturnRef as String: kCFBooleanTrue!,
+        kSecReturnPersistentRef as String: kCFBooleanTrue!,
         kSecValueData as String: data
       ]
 
@@ -127,8 +127,8 @@ public extension SecKey {
         kSecClass as String: kSecClassKey,
         kSecAttrKeyType as String: Int(type as String)! as CFNumber,
         kSecAttrApplicationTag as String: try Random.generateBytes(ofSize: 32),
-        kSecReturnRef as String: kCFBooleanTrue,
-        kSecReturnPersistentRef as String: kCFBooleanTrue,
+        kSecReturnRef as String: kCFBooleanTrue!,
+        kSecReturnPersistentRef as String: kCFBooleanTrue!,
         kSecValueData as String: data,
       ]
 
@@ -151,7 +151,7 @@ public extension SecKey {
     return key
   }
 
-  public func encode(class keyClass: CFString) throws -> Data {
+  func encode(class keyClass: CFString) throws -> Data {
 
     #if os(iOS) || os(watchOS) || os(tvOS)
 
@@ -169,8 +169,8 @@ public extension SecKey {
       let query = [
         kSecClass as String: kSecClassKey,
         kSecAttrKeyClass as String: keyClass,
-        kSecReturnData as String: kCFBooleanTrue,
-        kSecReturnPersistentRef as String: kCFBooleanTrue,
+        kSecReturnData as String: kCFBooleanTrue!,
+        kSecReturnPersistentRef as String: kCFBooleanTrue!,
         kSecValueRef as String: self
       ] as CFDictionary
 
@@ -217,7 +217,7 @@ public extension SecKey {
     return data
   }
 
-  public func attributes(class keyClass: CFString) throws -> [String: Any] {
+  func attributes(class keyClass: CFString) throws -> [String: Any] {
 
     #if os(iOS) || os(watchOS) || os(tvOS)
 
@@ -231,8 +231,8 @@ public extension SecKey {
         let query = [
           kSecClass as String: kSecClassKey as Any,
           kSecAttrKeyClass as String: keyClass,
-          kSecReturnAttributes as String: kCFBooleanTrue,
-          kSecReturnPersistentRef as String: kCFBooleanTrue,
+          kSecReturnAttributes as String: kCFBooleanTrue!,
+          kSecReturnPersistentRef as String: kCFBooleanTrue!,
           kSecValueRef as String: self
         ] as CFDictionary
 
@@ -263,7 +263,7 @@ public extension SecKey {
       else {
 
         let query: [String: Any] = [
-          kSecReturnAttributes as String: kCFBooleanTrue,
+          kSecReturnAttributes as String: kCFBooleanTrue!,
           kSecUseItemList as String: [self] as CFArray
         ]
 
@@ -281,14 +281,14 @@ public extension SecKey {
 
   }
 
-  public func type(class keyClass: CFString) throws -> CFString {
+  func type(class keyClass: CFString) throws -> CFString {
 
     let attrs = try attributes(class: keyClass)
 
     return (attrs[kSecAttrKeyType as String] as! NSNumber).stringValue as CFString
   }
 
-  public func save(class keyClass: CFString) throws {
+  func save(class keyClass: CFString) throws {
 
     let query: [String: Any] = [
       kSecClass as String: kSecClassKey,
@@ -307,12 +307,12 @@ public extension SecKey {
 
   }
 
-  public func delete() throws {
+  func delete() throws {
 
     try SecKey.delete(persistentReference: try self.persistentReference())
   }
 
-  public static func delete(persistentReference ref: Data) throws {
+  static func delete(persistentReference ref: Data) throws {
 
     let query: [String: Any] = [
       kSecClass as String: kSecClassKey,
@@ -325,7 +325,7 @@ public extension SecKey {
     }
   }
 
-  public func encrypt(plainText: Data, padding: SecEncryptionPadding) throws -> Data {
+  func encrypt(plainText: Data, padding: SecEncryptionPadding) throws -> Data {
 
     #if os(iOS) || os(watchOS) || os(tvOS)
 
@@ -336,9 +336,9 @@ public extension SecKey {
           cipherText.withUnsafeMutableBytes { cipherTextPtr in
             SecKeyEncrypt(self,
                           padding == .OAEP ? .OAEP : .PKCS1,
-                          plainTextPtr,
-                          plainText.count,
-                          cipherTextPtr,
+                          plainTextPtr.baseAddress!.assumingMemoryBound(to: UInt8.self),
+                          plainTextPtr.count,
+                          cipherTextPtr.baseAddress!.assumingMemoryBound(to: UInt8.self),
                           &cipherTextLen)
           }
         }
@@ -381,7 +381,7 @@ public extension SecKey {
     #endif
   }
 
-  public func decrypt(cipherText: Data, padding: SecEncryptionPadding) throws -> Data {
+  func decrypt(cipherText: Data, padding: SecEncryptionPadding) throws -> Data {
 
     #if os(iOS) || os(watchOS) || os(tvOS)
 
@@ -392,9 +392,9 @@ public extension SecKey {
           plainText.withUnsafeMutableBytes { plainTextPtr in
             SecKeyDecrypt(self,
                           padding == .OAEP ? .OAEP : .PKCS1,
-                          cipherTextPtr,
-                          cipherText.count,
-                          plainTextPtr,
+                          cipherTextPtr.baseAddress!.assumingMemoryBound(to: UInt8.self),
+                          cipherTextPtr.count,
+                          plainTextPtr.baseAddress!.assumingMemoryBound(to: UInt8.self),
                           &plainTextLen)
           }
         }
@@ -445,20 +445,22 @@ public extension SecKey {
         return .PKCS1SHA384
       case .SHA512:
         return .PKCS1SHA512
+      @unknown default:
+        fatalError("unsupported digest algorithm")
       }
     }
   #endif
 
-  public func sign(data: Data, digestAlgorithm: DigestAlgorithm) throws -> Data {
+  func sign(data: Data, digestAlgorithm: DigestAlgorithm) throws -> Data {
 
     let digest = try data.withUnsafeBytes {
-      try Digester(algorithm: digestAlgorithm).update(bytes: $0, count: data.count).final()
+      try Digester(algorithm: digestAlgorithm).update(bytes: $0.baseAddress!, count: $0.count).final()
     }
 
     return try signHash(digest: digest, digestAlgorithm: digestAlgorithm)
   }
 
-  public func signHash(digest: Data, digestAlgorithm: DigestAlgorithm) throws -> Data {
+  func signHash(digest: Data, digestAlgorithm: DigestAlgorithm) throws -> Data {
 
     #if os(iOS) || os(watchOS) || os(tvOS)
 
@@ -469,9 +471,9 @@ public extension SecKey {
           signature.withUnsafeMutableBytes { signaturePtr in
             SecKeyRawSign(self,
                           SecKey.paddingOf(digestAlgorithm: digestAlgorithm),
-                          digestPtr,
-                          digest.count,
-                          signaturePtr,
+                          digestPtr.baseAddress!.assumingMemoryBound(to: UInt8.self),
+                          digestPtr.count,
+                          signaturePtr.baseAddress!.assumingMemoryBound(to: UInt8.self),
                           &signatureLen)
           }
         }
@@ -521,6 +523,9 @@ public extension SecKey {
       case .SHA512:
         digestType = kSecDigestSHA2
         digestLen = 512
+        
+      @unknown default:
+        fatalError("unsupported digest algorithm")
       }
 
       if !SecTransformSetAttribute(transform, kSecDigestTypeAttribute, digestType, &error) {
@@ -545,16 +550,18 @@ public extension SecKey {
     #endif
   }
 
-  public func verify(data: Data, againstSignature signature: Data, digestAlgorithm: DigestAlgorithm) throws -> Bool {
+  func verify(data: Data, againstSignature signature: Data, digestAlgorithm: DigestAlgorithm) throws -> Bool {
 
-    let digest = try data.withUnsafeBytes {
-      try Digester(algorithm: digestAlgorithm).update(bytes: $0, count: data.count).final()
+    let digest = try data.withUnsafeBytes { ptr in
+      try Digester(algorithm: digestAlgorithm)
+        .update(bytes: ptr.baseAddress!.assumingMemoryBound(to: UInt8.self), count: ptr.count)
+        .final()
     }
 
     return try verifyHash(digest: digest, againstSignature: signature, digestAlgorithm: digestAlgorithm)
   }
 
-  public func verifyHash(digest: Data, againstSignature signature: Data, digestAlgorithm: DigestAlgorithm) throws -> Bool {
+  func verifyHash(digest: Data, againstSignature signature: Data, digestAlgorithm: DigestAlgorithm) throws -> Bool {
 
     #if os(iOS) || os(watchOS) || os(tvOS)
 
@@ -563,9 +570,9 @@ public extension SecKey {
           signature.withUnsafeBytes { signaturePtr in
             SecKeyRawVerify(self,
                             SecKey.paddingOf(digestAlgorithm: digestAlgorithm),
-                            digestPtr,
-                            digest.count,
-                            signaturePtr,
+                            digestPtr.baseAddress!.assumingMemoryBound(to: UInt8.self),
+                            digestPtr.count,
+                            signaturePtr.baseAddress!.assumingMemoryBound(to: UInt8.self),
                             signature.count)
           }
         }
@@ -619,6 +626,9 @@ public extension SecKey {
       case .SHA512:
         digestType = kSecDigestSHA2
         digestLen = 512
+
+      @unknown default:
+        fatalError("unsupported digest algorithm")
       }
 
       if !SecTransformSetAttribute(transform, kSecDigestTypeAttribute, digestType, &error) {

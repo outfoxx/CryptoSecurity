@@ -304,7 +304,7 @@ class CryptorTests: XCTestCase {
     let cipherText = try exec(encryptor, source: plainText)
 
     key.withUnsafeMutableBytes { ptr in
-      ptr.pointee += 1
+      ptr.baseAddress!.assumingMemoryBound(to: UInt8.self).pointee += 1
     }
 
     XCTAssertNotEqual(cipherText, try Cryptor.encrypt(data: plainText, using: .RC4, options: [.pkcs7Padding], key: key, iv: iv))
@@ -394,7 +394,7 @@ class CryptorTests: XCTestCase {
     let cipherText = try exec(encryptor, source: plainText)
 
     key.withUnsafeMutableBytes { ptr in
-      ptr.pointee += 1
+      ptr.baseAddress!.assumingMemoryBound(to: UInt8.self).pointee += 1
     }
 
     XCTAssertNotEqual(cipherText, try Cryptor.encrypt(data: plainText, using: .RC2, options: [.pkcs7Padding], key: key, iv: iv))
