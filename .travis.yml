@@ -1,9 +1,19 @@
 language: objective-c
-osx_image: xcode9
-script:
-  - xcrun xcodebuild -project CryptoSecurity.xcodeproj -scheme CryptoSecurity-macOS build test
-  - xcrun xcodebuild -project CryptoSecurity.xcodeproj -scheme CryptoSecurity-iOS build test
-  - xcrun xcodebuild -project CryptoSecurity.xcodeproj -scheme CryptoSecurity-tvOS build test
-  - xcrun xcodebuild -project CryptoSecurity.xcodeproj -scheme CryptoSecurity-watchOS build
+osx_image: xcode10.2
+xcode_project: CryptoSecurity.xcodeproj
+matrix:
+  include:
+    - xcode_scheme: CryptoSecurity (macOS)
+      xcode_destination: platform=macOS
+
+    - xcode_scheme: CryptoSecurity (iOS)
+      xcode_destination: platform=iOS Simulator,OS=12.2,name=iPhone X
+
+    - xcode_scheme: CryptoSecurity (tvOS)
+      xcode_destination: platform=tvOS Simulator,OS=12.2,name=Apple TV
+
+    - xcode_scheme: CryptoSecurity (watchOS)
+      xcode_destination: platform=watchOS Simulator,OS=5.2,name=Apple Watch Series 4 - 44mm
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)
