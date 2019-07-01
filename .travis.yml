@@ -1,15 +1,22 @@
 language: objective-c
 osx_image: xcode10.2
 xcode_project: CryptoSecurity.xcodeproj
+addons:
+  homebrew:
+    packages:
+      - xcodegen
+    update: true
 matrix:
   include:
-    - xcode_scheme: CryptoSecurity (macOS)
+    - xcode_scheme: CryptoSecurity_macOS
       xcode_destination: platform=macOS
 
-    - xcode_scheme: CryptoSecurity (iOS)
+    - xcode_scheme: CryptoSecurity_iOS
       xcode_destination: platform=iOS Simulator,OS=12.2,name=iPhone X
 
-    - xcode_scheme: CryptoSecurity (tvOS)
+    - xcode_scheme: CryptoSecurity_tvOS
       xcode_destination: platform=tvOS Simulator,OS=12.2,name=Apple TV
+before_script:
+  - xcodegen
 after_success:
   - bash <(curl -s https://codecov.io/bash)

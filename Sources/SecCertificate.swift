@@ -8,6 +8,7 @@
 
 import Foundation
 import Security
+@_exported import CryptoSecurityObjC
 
 
 public enum SecCertificateError: Int, Error {

@@ -1,0 +1,4 @@
+xcodegen
+xcodebuild -project CryptoSecurity.xcodeproj -scheme CryptoSecurity_macOS build test
+xcodebuild -project CryptoSecurity.xcodeproj -scheme CryptoSecurity_iOS -destination 'platform=iOS Simulator,name=iPhone 8' build test
+xcodebuild -project CryptoSecurity.xcodeproj -scheme CryptoSecurity_tvOS -destination 'platform=tvOS Simulator,name=Apple TV' build test

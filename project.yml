@@ -1,0 +1,57 @@
+name: CryptoSecurity
+options:
+  bundleIdPrefix: io.outfoxx
+targets:
+  CryptoSecurityObjC:
+    type: framework
+    platform: [macOS, iOS, tvOS, watchOS]
+    deploymentTarget:
+      macOS: 10.12
+      iOS: 10.0
+      tvOS: 10.0
+      watchOS: 3.0
+    sources: [CSources]
+  CryptoSecurity:
+    type: framework
+    platform: [macOS, iOS, tvOS, watchOS]
+    deploymentTarget:
+      macOS: 10.12
+      iOS: 10.0
+      tvOS: 10.0
+      watchOS: 3.0
+    sources: [Sources]
+    dependencies:
+      - target: CryptoSecurityObjC_${platform}
+    info:
+      path: Project/${platform}/Info.plist
+    scheme:
+      testTargets:
+        - CryptoSecurityTests_${platform}
+  CryptoSecurityHost:
+    type: application
+    platform: [iOS, tvOS, watchOS]
+    sources:
+      - TestHosts/${platform}
+    dependencies:
+      - target: CryptoSecurity_${platform}
+    info:
+      path: Project/${platform}Host/Info.plist
+    entitlements:
+      path: Project/${platform}Host/CryptoSecurityHost.entitlements
+      properties:
+        keychain-access-groups:
+          - $(AppIdentifierPrefix)io.outfoxx.CryptoSecurityHost_${platform}
+  CryptoSecurityTests:
+    type: bundle.unit-test
+    platform: [iOS, tvOS, watchOS]
+    sources: [Tests]
+    dependencies:
+      - target: CryptoSecurityHost_${platform}
+    settings:
+      TEST_HOST: $(BUILT_PRODUCTS_DIR)/CryptoSecurityHost.app/CryptoSecurityHost
+  CryptoSecurityTests_macOS:
+    type: bundle.unit-test
+    platform: macOS
+    sources: [Tests]
+    settings:
+      PRODUCT_NAME: CryptoSecurityTests 
