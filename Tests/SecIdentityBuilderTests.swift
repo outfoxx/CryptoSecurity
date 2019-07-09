@@ -2,12 +2,14 @@
 //  SecIdentityBuilderTests.swift
 //  CryptoSecurity
 //
-//  Created by Kevin Wooten on 8/7/16.
-//  Copyright © 2016 Outfox, Inc. All rights reserved.
+//  Copyright © 2019 Outfox, inc.
+//
+//
+//  Distributed under the MIT License, See LICENSE for details.
 //
 
-import XCTest
 @testable import CryptoSecurity
+import XCTest
 
 
 class SecIdentityBuilderTests: XCTestCase {
@@ -17,7 +19,7 @@ class SecIdentityBuilderTests: XCTestCase {
     let subject = [
       X501NameEntry("CN", "Test Guy"),
       X501NameEntry("O", "Some Corp"),
-      X501NameEntry("C", "USA")
+      X501NameEntry("C", "USA"),
     ]
 
     let builder = try SecIdentityBuilder.generate(subject: subject,

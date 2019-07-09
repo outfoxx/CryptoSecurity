@@ -2,8 +2,10 @@
 //  X509.swift
 //  CryptoSecurity
 //
-//  Created by Kevin Wooten on 8/10/16.
-//  Copyright © 2016 Outfox, Inc. All rights reserved.
+//  Copyright © 2019 Outfox, inc.
+//
+//
+//  Distributed under the MIT License, See LICENSE for details.
 //
 
 import Foundation
@@ -28,10 +30,10 @@ public struct X509 {
       X501.encode(name: issuer),
       ASN1.sequence(of: [
         ASN1.utcTime(of: notBefore),
-        ASN1.utcTime(of: notAfter)
+        ASN1.utcTime(of: notAfter),
       ]),
       X501.encode(name: subject),
-      subjectPublicKeyInfo(encryptionOID: OID.rsaEncryption, publicKey: publicKey)
+      subjectPublicKeyInfo(encryptionOID: OID.rsaEncryption, publicKey: publicKey),
     ]
 
     if let issuerUniqueId = issuerUniqueId {
@@ -75,7 +77,7 @@ public struct X509 {
     return ASN1.sequence(of: [
       OID.extensionKeyUsage,
       ASN1.boolean(of: true),
-      ASN1.octetString(of: ASN1.DER.encode(items: ASN1.bitString(of: BitSet(value: keyUsage))))
+      ASN1.octetString(of: ASN1.DER.encode(items: ASN1.bitString(of: BitSet(value: keyUsage)))),
     ])
   }
 

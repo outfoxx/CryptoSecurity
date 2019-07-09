@@ -2,8 +2,10 @@
 //  SecIdentity.swift
 //  CryptoSecurity
 //
-//  Created by Kevin Wooten on 6/30/16.
-//  Copyright © 2016 Outfox, Inc. All rights reserved.
+//  Copyright © 2019 Outfox, inc.
+//
+//
+//  Distributed under the MIT License, See LICENSE for details.
 //
 
 import Foundation
@@ -22,7 +24,7 @@ public enum SecIdentityError: Int, Error {
     let error = error as NSError
 
     var userInfo = [
-      NSLocalizedDescriptionKey: message
+      NSLocalizedDescriptionKey: message,
     ] as [String: Any]
 
     if let status = status {
@@ -48,7 +50,7 @@ public extension SecIdentity {
     let query: [String: Any] = [
       kSecClass as String: kSecClassIdentity,
       kSecAttrLabel as String: attrs[kSecAttrLabel as String]!,
-      kSecReturnRef as String: kCFBooleanTrue!
+      kSecReturnRef as String: kCFBooleanTrue!,
     ]
 
     var result: CFTypeRef?
@@ -125,7 +127,7 @@ public class SecIdentityBuilder {
     let query: [String: Any] = [
       kSecClass as String: kSecClassCertificate,
       kSecAttrLabel as String: UUID().uuidString,
-      kSecValueRef as String: certificate
+      kSecValueRef as String: certificate,
     ]
 
     var data: CFTypeRef?

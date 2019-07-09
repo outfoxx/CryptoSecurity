@@ -2,8 +2,10 @@
 //  X501.swift
 //  CryptoSecurity
 //
-//  Created by Kevin Wooten on 8/9/16.
-//  Copyright © 2016 Outfox, Inc. All rights reserved.
+//  Copyright © 2019 Outfox, inc.
+//
+//
+//  Distributed under the MIT License, See LICENSE for details.
 //
 
 import Foundation
@@ -11,7 +13,7 @@ import Foundation
 
 public typealias X501Name = [(ASN1ObjectIdentifier, ASN1String)]
 
-public func ==(lhs: X501Name, rhs: X501Name) -> Bool {
+public func == (lhs: X501Name, rhs: X501Name) -> Bool {
   for (lhs, rhs) in zip(lhs, rhs) {
     if lhs.0 != rhs.0 || lhs.1.value != rhs.1.value {
       return false
@@ -20,7 +22,7 @@ public func ==(lhs: X501Name, rhs: X501Name) -> Bool {
   return true
 }
 
-public func !=(lhs: X501Name, rhs: X501Name) -> Bool {
+public func != (lhs: X501Name, rhs: X501Name) -> Bool {
   return !(lhs == rhs)
 }
 

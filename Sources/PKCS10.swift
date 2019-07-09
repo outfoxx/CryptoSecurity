@@ -2,8 +2,10 @@
 //  PKCS10.swift
 //  CryptoSecurity
 //
-//  Created by Kevin Wooten on 7/29/16.
-//  Copyright © 2016 Outfox, Inc. All rights reserved.
+//  Copyright © 2019 Outfox, inc.
+//
+//
+//  Distributed under the MIT License, See LICENSE for details.
 //
 
 import Foundation
@@ -14,10 +16,10 @@ public struct PKCS10 {
   public static func certificationRequestInfo(subject: X501Name, publicKey: ASN1Sequence, keyUsage: UInt32) -> ASN1Item {
 
     return ASN1.sequence(of: [
-      ASN1.integer(of: 0),                                                                // Version
-      X501.encode(name: subject),                                                         // Subject
-      X509.subjectPublicKeyInfo(encryptionOID: OID.rsaEncryption, publicKey: publicKey),  // Public Key
-      attributes(keyUsage: keyUsage)                                                      // Attributes
+      ASN1.integer(of: 0), // Version
+      X501.encode(name: subject), // Subject
+      X509.subjectPublicKeyInfo(encryptionOID: OID.rsaEncryption, publicKey: publicKey), // Public Key
+      attributes(keyUsage: keyUsage), // Attributes
     ])
   }
 
@@ -39,7 +41,7 @@ public struct PKCS10 {
 
     return ASN1.sequence(of: [
       OID.extensionRequest,
-      ASN1.set(of: extensions)
+      ASN1.set(of: extensions),
     ])
   }
 

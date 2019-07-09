@@ -2,8 +2,10 @@
 //  ASN1.swift
 //  CryptoSecurity
 //
-//  Created by Kevin Wooten on 7/29/16.
-//  Copyright © 2016 Outfox, Inc. All rights reserved.
+//  Copyright © 2019 Outfox, inc.
+//
+//
+//  Distributed under the MIT License, See LICENSE for details.
 //
 
 import Foundation
@@ -65,56 +67,56 @@ public struct ASN1Integer: ASN1Item, Equatable {
       case 0:
         return 0
       case 1:
-        let byte0 = ((Int64(ptr[0]) & 0xff) << 00)
+        let byte0 = ((Int64(ptr[0]) & 0xFF) << 00)
         return byte0
       case 2:
-        let byte1 = ((Int64(ptr[0]) & 0xff) << 08)
-        let byte0 = ((Int64(ptr[1]) & 0xff) << 00)
+        let byte1 = ((Int64(ptr[0]) & 0xFF) << 08)
+        let byte0 = ((Int64(ptr[1]) & 0xFF) << 00)
         return byte1 | byte0
       case 3:
-        let byte2 = ((Int64(ptr[0]) & 0xff) << 16)
-        let byte1 = ((Int64(ptr[1]) & 0xff) << 08)
-        let byte0 = ((Int64(ptr[2]) & 0xff) << 00)
+        let byte2 = ((Int64(ptr[0]) & 0xFF) << 16)
+        let byte1 = ((Int64(ptr[1]) & 0xFF) << 08)
+        let byte0 = ((Int64(ptr[2]) & 0xFF) << 00)
         return byte2 | byte1 | byte0
       case 4:
-        let byte3 = ((Int64(ptr[0]) & 0xff) << 24)
-        let byte2 = ((Int64(ptr[1]) & 0xff) << 16)
-        let byte1 = ((Int64(ptr[2]) & 0xff) << 08)
-        let byte0 = ((Int64(ptr[3]) & 0xff) << 00)
+        let byte3 = ((Int64(ptr[0]) & 0xFF) << 24)
+        let byte2 = ((Int64(ptr[1]) & 0xFF) << 16)
+        let byte1 = ((Int64(ptr[2]) & 0xFF) << 08)
+        let byte0 = ((Int64(ptr[3]) & 0xFF) << 00)
         return byte3 | byte2 | byte1 | byte0
       case 5:
-        let byte4 = ((Int64(ptr[0]) & 0xff) << 32)
-        let byte3 = ((Int64(ptr[1]) & 0xff) << 24)
-        let byte2 = ((Int64(ptr[2]) & 0xff) << 16)
-        let byte1 = ((Int64(ptr[3]) & 0xff) << 08)
-        let byte0 = ((Int64(ptr[4]) & 0xff) << 00)
+        let byte4 = ((Int64(ptr[0]) & 0xFF) << 32)
+        let byte3 = ((Int64(ptr[1]) & 0xFF) << 24)
+        let byte2 = ((Int64(ptr[2]) & 0xFF) << 16)
+        let byte1 = ((Int64(ptr[3]) & 0xFF) << 08)
+        let byte0 = ((Int64(ptr[4]) & 0xFF) << 00)
         return byte4 | byte3 | byte2 | byte1 | byte0
       case 6:
-        let byte5 = ((Int64(ptr[0]) & 0xff) << 40)
-        let byte4 = ((Int64(ptr[1]) & 0xff) << 32)
-        let byte3 = ((Int64(ptr[2]) & 0xff) << 24)
-        let byte2 = ((Int64(ptr[3]) & 0xff) << 16)
-        let byte1 = ((Int64(ptr[4]) & 0xff) << 08)
-        let byte0 = ((Int64(ptr[5]) & 0xff) << 00)
+        let byte5 = ((Int64(ptr[0]) & 0xFF) << 40)
+        let byte4 = ((Int64(ptr[1]) & 0xFF) << 32)
+        let byte3 = ((Int64(ptr[2]) & 0xFF) << 24)
+        let byte2 = ((Int64(ptr[3]) & 0xFF) << 16)
+        let byte1 = ((Int64(ptr[4]) & 0xFF) << 08)
+        let byte0 = ((Int64(ptr[5]) & 0xFF) << 00)
         return byte5 | byte4 | byte3 | byte2 | byte1 | byte0
       case 7:
-        let byte6 = ((Int64(ptr[0]) & 0xff) << 48)
-        let byte5 = ((Int64(ptr[1]) & 0xff) << 40)
-        let byte4 = ((Int64(ptr[2]) & 0xff) << 32)
-        let byte3 = ((Int64(ptr[3]) & 0xff) << 24)
-        let byte2 = ((Int64(ptr[4]) & 0xff) << 16)
-        let byte1 = ((Int64(ptr[5]) & 0xff) << 08)
-        let byte0 = ((Int64(ptr[6]) & 0xff) << 00)
+        let byte6 = ((Int64(ptr[0]) & 0xFF) << 48)
+        let byte5 = ((Int64(ptr[1]) & 0xFF) << 40)
+        let byte4 = ((Int64(ptr[2]) & 0xFF) << 32)
+        let byte3 = ((Int64(ptr[3]) & 0xFF) << 24)
+        let byte2 = ((Int64(ptr[4]) & 0xFF) << 16)
+        let byte1 = ((Int64(ptr[5]) & 0xFF) << 08)
+        let byte0 = ((Int64(ptr[6]) & 0xFF) << 00)
         return byte6 | byte5 | byte4 | byte3 | byte2 | byte1 | byte0
       case 8:
-        let byte7 = ((Int64(ptr[0]) & 0xff) << 56)
-        let byte6 = ((Int64(ptr[1]) & 0xff) << 48)
-        let byte5 = ((Int64(ptr[2]) & 0xff) << 40)
-        let byte4 = ((Int64(ptr[3]) & 0xff) << 32)
-        let byte3 = ((Int64(ptr[4]) & 0xff) << 24)
-        let byte2 = ((Int64(ptr[5]) & 0xff) << 16)
-        let byte1 = ((Int64(ptr[6]) & 0xff) << 08)
-        let byte0 = ((Int64(ptr[7]) & 0xff) << 00)
+        let byte7 = ((Int64(ptr[0]) & 0xFF) << 56)
+        let byte6 = ((Int64(ptr[1]) & 0xFF) << 48)
+        let byte5 = ((Int64(ptr[2]) & 0xFF) << 40)
+        let byte4 = ((Int64(ptr[3]) & 0xFF) << 32)
+        let byte3 = ((Int64(ptr[4]) & 0xFF) << 24)
+        let byte2 = ((Int64(ptr[5]) & 0xFF) << 16)
+        let byte1 = ((Int64(ptr[6]) & 0xFF) << 08)
+        let byte0 = ((Int64(ptr[7]) & 0xFF) << 00)
         return byte7 | byte6 | byte5 | byte4 | byte3 | byte2 | byte1 | byte0
       default:
         fatalError("Invalid intger length")
@@ -145,8 +147,8 @@ public struct ASN1BitString: ASN1Item, Equatable {
 
   private func big<Container: UnsignedInteger>() -> Container {
     let size = MemoryLayout<Container>.size
-    let prefix = Array<UInt8>(repeating: 0, count: size)
-    let bytes = Array((prefix + self.value.reversed().map {
+    let prefix = [UInt8](repeating: 0, count: size)
+    let bytes = Array((prefix + value.reversed().map {
       reverse(byte: $0)
     }).suffix(size))
     return bytes.withUnsafeBytes { ptr -> Container in
@@ -279,7 +281,7 @@ public struct ASN1IA5String: ASN1Item, ASN1String, Equatable {
 
 public struct ASN1Sequence: ASN1Item, Equatable {
 
-  public let value: Array<ASN1Item>
+  public let value: [ASN1Item]
 
   public func encode(encoder: ASN1Encoder) {
     encoder.encode(sequence: value)
@@ -297,7 +299,7 @@ public struct ASN1Sequence: ASN1Item, Equatable {
 
 public struct ASN1Set: ASN1Item, Equatable {
 
-  public let value: Array<ASN1Item>
+  public let value: [ASN1Item]
 
   public func encode(encoder: ASN1Encoder) {
     encoder.encode(set: value)
@@ -344,7 +346,7 @@ public struct ASN1Object: ASN1Item, Equatable {
 }
 
 
-func ==(lhs: ASN1Item, rhs: ASN1Item) -> Bool {
+func == (lhs: ASN1Item, rhs: ASN1Item) -> Bool {
   if let lhs = lhs as? ASN1Boolean, let rhs = rhs as? ASN1Boolean {
     return lhs == rhs
   }
@@ -385,7 +387,7 @@ func ==(lhs: ASN1Item, rhs: ASN1Item) -> Bool {
 }
 
 
-func !=(lhs: ASN1Item, rhs: ASN1Item) -> Bool {
+func != (lhs: ASN1Item, rhs: ASN1Item) -> Bool {
   return !(lhs == rhs)
 }
 
@@ -477,7 +479,7 @@ public struct ASN1 {
       let ptr = raw.baseAddress!.assumingMemoryBound(to: UInt8.self)
 
       var nonZero = ptr
-      while nonZero.pointee == 0 && ptr.distance(to: nonZero) < value.count - 1 {
+      while nonZero.pointee == 0, ptr.distance(to: nonZero) < value.count - 1 {
         nonZero = nonZero.successor()
       }
 
@@ -571,26 +573,26 @@ public struct ASN1 {
 
   public struct Tag {
 
-    public static let BOOLEAN: UInt8             = 0x01
-    public static let INTEGER: UInt8             = 0x02
-    public static let BITSTRING: UInt8           = 0x03
-    public static let OCTETSTRING: UInt8         = 0x04
-    public static let NULL: UInt8                = 0x05
-    public static let OBJECT_IDENTIFIER: UInt8   = 0x06
-    public static let REAL: UInt8                = 0x09
-    public static let UTF8STRING: UInt8          = 0x0c
-    public static let PRINTABLESTRING: UInt8     = 0x13
-    public static let IA5STRING: UInt8           = 0x16
-    public static let UTCTIME: UInt8             = 0x17
-    public static let SEQUENCE: UInt8            = 0x30
-    public static let SET: UInt8                 = 0x31
+    public static let BOOLEAN: UInt8 = 0x01
+    public static let INTEGER: UInt8 = 0x02
+    public static let BITSTRING: UInt8 = 0x03
+    public static let OCTETSTRING: UInt8 = 0x04
+    public static let NULL: UInt8 = 0x05
+    public static let OBJECT_IDENTIFIER: UInt8 = 0x06
+    public static let REAL: UInt8 = 0x09
+    public static let UTF8STRING: UInt8 = 0x0C
+    public static let PRINTABLESTRING: UInt8 = 0x13
+    public static let IA5STRING: UInt8 = 0x16
+    public static let UTCTIME: UInt8 = 0x17
+    public static let SEQUENCE: UInt8 = 0x30
+    public static let SET: UInt8 = 0x31
 
     public static func privatePrimitive(tag: UInt8) -> UInt8 {
       return tag | 0x80
     }
 
     public static func privateStructured(tag: UInt8) -> UInt8 {
-      return tag | 0xa0
+      return tag | 0xA0
     }
 
     private init() {}
@@ -645,16 +647,16 @@ public struct ASN1 {
 
         switch value {
         case 0x0000 ..< 0x0080:
-          append(byte: UInt8(value & 0x007f))
+          append(byte: UInt8(value & 0x007F))
 
         case 0x0080 ..< 0x0100:
           append(byte: 0x81)
-        append(byte: UInt8(value & 0x00ff))
+          append(byte: UInt8(value & 0x00FF))
 
         case 0x0100 ..< 0x8000:
           append(byte: 0x82)
-        append(byte: UInt8((value & 0xff00) >> 8))
-        append(byte: UInt8(value & 0xff))
+          append(byte: UInt8((value & 0xFF00) >> 8))
+          append(byte: UInt8(value & 0xFF))
 
         default:
           fatalError("Invalid DER length")
@@ -672,7 +674,7 @@ public struct ASN1 {
 
       public func encode(boolean value: Bool) {
         append(tag: Tag.BOOLEAN, length: 1)
-        append(byte: value ? 0xff : 0x00)
+        append(byte: value ? 0xFF : 0x00)
       }
 
       public func encode(integer value: UInt64) {
@@ -714,11 +716,11 @@ public struct ASN1 {
           var val = val
           var result = Data(count: 9)
           var pos = 8
-          result[pos] = UInt8(val & 0x7f)
+          result[pos] = UInt8(val & 0x7F)
           while val >= (UInt64(1) << 7) {
             val >>= 7
             pos -= 1
-            result[pos] = UInt8((val & 0x7f) | 0x80)
+            result[pos] = UInt8((val & 0x7F) | 0x80)
           }
           return Data(result.dropFirst(pos))
         }
@@ -810,7 +812,8 @@ public struct ASN1 {
 
         items.append(parse(item: &ptr))
 
-      } while start.distance(to: ptr) < length
+      }
+      while start.distance(to: ptr) < length
 
       return items
     }
@@ -903,7 +906,8 @@ public struct ASN1 {
 
         ids.append(val)
 
-      } while start.distance(to: ptr) < length
+      }
+      while start.distance(to: ptr) < length
 
       return ids
     }
@@ -914,7 +918,7 @@ public struct ASN1 {
 
       repeat {
         val = val << 7
-        val = val + UInt64(ptr.pointee & 0x7f)
+        val = val + UInt64(ptr.pointee & 0x7F)
         ptr = ptr.successor()
       }
       while ptr.predecessor().pointee & 0x80 != 0
@@ -957,9 +961,9 @@ public struct ASN1 {
 
 func reverse(byte: UInt8) -> UInt8 {
   var b = byte
-  b = (b & 0xf0) >> 4 | (b & 0x0f) << 4
-  b = (b & 0xcc) >> 2 | (b & 0x33) << 2
-  b = (b & 0xaa) >> 1 | (b & 0x55) << 1
+  b = (b & 0xF0) >> 4 | (b & 0x0F) << 4
+  b = (b & 0xCC) >> 2 | (b & 0x33) << 2
+  b = (b & 0xAA) >> 1 | (b & 0x55) << 1
   return b
 }
 
@@ -967,6 +971,6 @@ func reverse(byte: UInt8) -> UInt8 {
 func toData<T>(_ value: T) -> Data {
   var value = value
   return withUnsafePointer(to: &value) {
-    return Data(bytes: $0, count: MemoryLayout<T>.size)
+    Data(bytes: $0, count: MemoryLayout<T>.size)
   }
 }
