@@ -2,25 +2,27 @@
 //  SecCertificate.swift
 //  CryptoSecurity
 //
-//  Created by Kevin Wooten on 7/6/16.
-//  Copyright © 2016 Outfox, Inc. All rights reserved.
+//  Copyright © 2019 Outfox, inc.
+//
+//
+//  Distributed under the MIT License, See LICENSE for details.
 //
 
-import Foundation
-import Security
-import Regex
 @_exported import CryptoSecurityObjC
+import Foundation
+import Regex
+import Security
 
 
 public enum SecCertificateError: Int, Error {
-  case loadFailed               = 0
-  case saveFailed               = 1
-  case queryFailed              = 2
-  case trustCreationFailed      = 3
-  case trustValidationFailed    = 4
-  case trustValidationError     = 5
+  case loadFailed = 0
+  case saveFailed = 1
+  case queryFailed = 2
+  case trustCreationFailed = 3
+  case trustValidationFailed = 4
+  case trustValidationError = 5
   case publicKeyRetrievalFailed = 6
-  case parsingFailed            = 7
+  case parsingFailed = 7
 }
 
 
@@ -94,7 +96,7 @@ public extension SecCertificate {
     }
 
     if
-      result != SecTrustResultType.proceed &&
+      result != SecTrustResultType.proceed,
       result != SecTrustResultType.unspecified {
       throw SecCertificateError.trustValidationFailed
     }
@@ -116,7 +118,7 @@ public extension SecCertificate {
 
       let query = [
         kSecReturnAttributes as String: kCFBooleanTrue!,
-        kSecValueRef as String: self
+        kSecValueRef as String: self,
       ] as CFDictionary
 
       var data: CFTypeRef?
@@ -130,7 +132,7 @@ public extension SecCertificate {
 
       let query: [String: Any] = [
         kSecReturnAttributes as String: kCFBooleanTrue!,
-        kSecUseItemList as String: [self] as CFArray
+        kSecUseItemList as String: [self] as CFArray,
       ]
 
       var data: AnyObject?
@@ -149,7 +151,7 @@ public extension SecCertificate {
 
     let query = [
       kSecClass as String: kSecClassCertificate,
-      kSecValueRef as String: self
+      kSecValueRef as String: self,
     ] as CFDictionary
 
     var data: CFTypeRef?
@@ -254,18 +256,18 @@ public extension SecCertificate {
     }
 
     // See: https://tools.ietf.org/html/rfc5280#section-4.2.1.3
-    public static let unspecified        = SecKeyUsage(rawValue: 0)
-    public static let digitalSignature   = SecKeyUsage(rawValue: 1 << 0)
-    public static let nonRepudiation     = SecKeyUsage(rawValue: 1 << 1)
-    public static let keyEncipherment    = SecKeyUsage(rawValue: 1 << 2)
-    public static let dataEncipherment   = SecKeyUsage(rawValue: 1 << 3)
-    public static let keyAgreement       = SecKeyUsage(rawValue: 1 << 4)
-    public static let keyCertSign        = SecKeyUsage(rawValue: 1 << 5)
-    public static let crlSign            = SecKeyUsage(rawValue: 1 << 6)
-    public static let encipherOnly       = SecKeyUsage(rawValue: 1 << 7)
-    public static let decipherOnly       = SecKeyUsage(rawValue: 1 << 8)
-    public static let critical           = SecKeyUsage(rawValue: 1 << 31)
-    public static let all                = SecKeyUsage(rawValue: 0x7fff_ffff)
+    public static let unspecified = SecKeyUsage(rawValue: 0)
+    public static let digitalSignature = SecKeyUsage(rawValue: 1 << 0)
+    public static let nonRepudiation = SecKeyUsage(rawValue: 1 << 1)
+    public static let keyEncipherment = SecKeyUsage(rawValue: 1 << 2)
+    public static let dataEncipherment = SecKeyUsage(rawValue: 1 << 3)
+    public static let keyAgreement = SecKeyUsage(rawValue: 1 << 4)
+    public static let keyCertSign = SecKeyUsage(rawValue: 1 << 5)
+    public static let crlSign = SecKeyUsage(rawValue: 1 << 6)
+    public static let encipherOnly = SecKeyUsage(rawValue: 1 << 7)
+    public static let decipherOnly = SecKeyUsage(rawValue: 1 << 8)
+    public static let critical = SecKeyUsage(rawValue: 1 << 31)
+    public static let all = SecKeyUsage(rawValue: 0x7FFFFFFF)
   }
 #endif
 
@@ -335,8 +337,7 @@ public class SecCertificateFactory {
   public var publicKey: Data!
   public var keyUsage: SecKeyUsage?
 
-  public init() {
-  }
+  public init() {}
 
   public init(certificateSigningRequest csrData: Data) {
 
@@ -345,8 +346,7 @@ public class SecCertificateFactory {
 
     subject = X501.parse(name: X501.decode(sequence: csrInfo.value[1] as! ASN1Sequence))
     publicKey = ((csrInfo.value[2] as! ASN1Sequence).value[1] as! ASN1BitString).value
-    let keyUsageValue = (ASN1.DER.decode(data: (((((ASN1.DER.decode(data: (csrInfo.value[3] as! ASN1Object).data) as! ASN1Sequence).value[1] as! ASN1Set).value[0] as! ASN1Sequence).value[0] as! ASN1Sequence).value[2] as! ASN1OctetString).value) as! ASN1BitString)
-      .host() as UInt32
+    let keyUsageValue = (ASN1.DER.decode(data: (((((ASN1.DER.decode(data: (csrInfo.value[3] as! ASN1Object).data) as! ASN1Sequence).value[1] as! ASN1Set).value[0] as! ASN1Sequence).value[0] as! ASN1Sequence).value[2] as! ASN1OctetString).value) as! ASN1BitString).host() as UInt32
     keyUsage = SecKeyUsage(rawValue: keyUsageValue)
   }
 
@@ -394,9 +394,8 @@ public class SecCertificateFactory {
       ASN1.sequence(of: [
         certificateInfo,
         ASN1.sequence(of: [signingOid, ASN1.null()]),
-        ASN1.bitString(of: signature)
-      ])
-    )
+        ASN1.bitString(of: signature),
+      ]))
   }
 
 }

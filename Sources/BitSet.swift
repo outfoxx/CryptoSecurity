@@ -2,8 +2,10 @@
 //  BitSet.swift
 //  CryptoSecurity
 //
-//  Created by Kevin Wooten on 8/8/16.
-//  Copyright © 2016 Outfox, Inc. All rights reserved.
+//  Copyright © 2019 Outfox, inc.
+//
+//
+//  Distributed under the MIT License, See LICENSE for details.
 //
 
 import Foundation
@@ -14,7 +16,7 @@ import Foundation
  */
 public struct BitSet {
   /* How many bits this object can hold. */
-  private(set) public var size: Int
+  public private(set) var size: Int
 
   /*
    We store the bits in a list of unsigned 8-bit integers.
@@ -22,7 +24,7 @@ public struct BitSet {
    */
   private let N = 8
   public typealias Byte = UInt8
-  fileprivate(set) public var bytes: [UInt8]
+  public fileprivate(set) var bytes: [UInt8]
 
   private let allOnes = ~Byte()
 
@@ -97,7 +99,8 @@ public struct BitSet {
       let mask = 1 << Byte(63 - diff)
       // Subtract 1 to turn it into a mask, and add the high bit back in.
       return BitSet.Byte(mask | (mask - 1))
-    } else {
+    }
+    else {
       return allOnes
     }
   }
@@ -165,8 +168,8 @@ public struct BitSet {
     var count = 0
     for var x in bytes {
       while x != 0 {
-        let y = x & ~(x - 1)  // find lowest 1-bit
-        x = x ^ y             // and erase it
+        let y = x & ~(x - 1) // find lowest 1-bit
+        x = x ^ y // and erase it
         count += 1
       }
     }
@@ -200,13 +203,11 @@ public struct BitSet {
 
 // MARK: - Equality
 
-extension BitSet: Equatable {
-}
+extension BitSet: Equatable {}
 
 // MARK: - Hashing
 
-extension BitSet: Hashable {
-}
+extension BitSet: Hashable {}
 
 // MARK: - Bitwise operations
 

@@ -2,12 +2,14 @@
 //  SecCertificateTests.swift
 //  CryptoSecurity
 //
-//  Created by Kevin Wooten on 8/10/16.
-//  Copyright © 2016 Outfox, Inc. All rights reserved.
+//  Copyright © 2019 Outfox, inc.
+//
+//
+//  Distributed under the MIT License, See LICENSE for details.
 //
 
-import XCTest
 @testable import CryptoSecurity
+import XCTest
 
 
 class SecCertificateTests: XCTestCase {
@@ -49,7 +51,7 @@ class SecCertificateTests: XCTestCase {
       _ = try cert.publicKeyValidated(trustedCertificates: [])
       XCTFail("Should have thrown an error")
     }
-    catch let error {
+    catch {
       print(error)
     }
   }

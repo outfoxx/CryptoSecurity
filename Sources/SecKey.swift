@@ -2,8 +2,10 @@
 //  SecKey.swift
 //  CryptoSecurity
 //
-//  Created by Kevin Wooten on 7/6/16.
-//  Copyright © 2016 Outfox, Inc. All rights reserved.
+//  Copyright © 2019 Outfox, inc.
+//
+//
+//  Distributed under the MIT License, See LICENSE for details.
 //
 
 import Foundation
@@ -46,7 +48,7 @@ public extension SecKey {
 
     let query: [String: Any] = [
       kSecValueRef as String: self,
-      kSecReturnPersistentRef as String: kCFBooleanTrue!
+      kSecReturnPersistentRef as String: kCFBooleanTrue!,
     ]
 
     var ref: CFTypeRef?
@@ -61,7 +63,7 @@ public extension SecKey {
 
     let query: [String: Any] = [
       kSecValuePersistentRef as String: pref,
-      kSecReturnRef as String: kCFBooleanTrue!
+      kSecReturnRef as String: kCFBooleanTrue!,
     ]
 
     var ref: CFTypeRef?
@@ -100,7 +102,7 @@ public extension SecKey {
         kSecAttrApplicationTag as String: try Random.generateBytes(ofSize: 32),
         kSecReturnRef as String: kCFBooleanTrue!,
         kSecReturnPersistentRef as String: kCFBooleanTrue!,
-        kSecValueData as String: data
+        kSecValueData as String: data,
       ]
 
     #elseif os(macOS)
@@ -171,7 +173,7 @@ public extension SecKey {
         kSecAttrKeyClass as String: keyClass,
         kSecReturnData as String: kCFBooleanTrue!,
         kSecReturnPersistentRef as String: kCFBooleanTrue!,
-        kSecValueRef as String: self
+        kSecValueRef as String: self,
       ] as CFDictionary
 
       var result: CFTypeRef?
@@ -233,7 +235,7 @@ public extension SecKey {
           kSecAttrKeyClass as String: keyClass,
           kSecReturnAttributes as String: kCFBooleanTrue!,
           kSecReturnPersistentRef as String: kCFBooleanTrue!,
-          kSecValueRef as String: self
+          kSecValueRef as String: self,
         ] as CFDictionary
 
         var result: CFTypeRef?
@@ -264,7 +266,7 @@ public extension SecKey {
 
         let query: [String: Any] = [
           kSecReturnAttributes as String: kCFBooleanTrue!,
-          kSecUseItemList as String: [self] as CFArray
+          kSecUseItemList as String: [self] as CFArray,
         ]
 
         var data: AnyObject?
@@ -293,7 +295,7 @@ public extension SecKey {
     let query: [String: Any] = [
       kSecClass as String: kSecClassKey,
       kSecAttrKeyClass as String: keyClass,
-      kSecValueRef as String: self
+      kSecValueRef as String: self,
     ]
 
     let status = SecItemAdd(query as CFDictionary, nil)
@@ -309,14 +311,14 @@ public extension SecKey {
 
   func delete() throws {
 
-    try SecKey.delete(persistentReference: try self.persistentReference())
+    try SecKey.delete(persistentReference: try persistentReference())
   }
 
   static func delete(persistentReference ref: Data) throws {
 
     let query: [String: Any] = [
       kSecClass as String: kSecClassKey,
-      kSecValuePersistentRef as String: ref
+      kSecValuePersistentRef as String: ref,
     ]
 
     let status = SecItemDelete(query as CFDictionary)
@@ -523,7 +525,7 @@ public extension SecKey {
       case .SHA512:
         digestType = kSecDigestSHA2
         digestLen = 512
-        
+
       @unknown default:
         fatalError("unsupported digest algorithm")
       }

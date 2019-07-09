@@ -2,12 +2,14 @@
 //  SecKeyTests.swift
 //  CryptoSecurity
 //
-//  Created by Kevin Wooten on 8/7/16.
-//  Copyright © 2016 Outfox, Inc. All rights reserved.
+//  Copyright © 2019 Outfox, inc.
+//
+//
+//  Distributed under the MIT License, See LICENSE for details.
 //
 
-import XCTest
 @testable import CryptoSecurity
+import XCTest
 
 
 class SecKeyTests: XCTestCase {
@@ -42,8 +44,7 @@ class SecKeyTests: XCTestCase {
       _ = try publicKey.encrypt(plainText: try Random.generateBytes(ofSize: 312), padding: .OAEP)
       XCTFail("Encrypt should have thrown an error")
     }
-    catch _ {
-    }
+    catch _ {}
   }
 
   func testFailedDecryptError() {
@@ -52,8 +53,7 @@ class SecKeyTests: XCTestCase {
       _ = try privateKey.decrypt(cipherText: try Random.generateBytes(ofSize: 312), padding: .OAEP)
       XCTFail("Decrypt should have thrown an error")
     }
-    catch _ {
-    }
+    catch _ {}
   }
 
   func testSignVerifySHA1() throws {
@@ -114,12 +114,12 @@ class SecKeyTests: XCTestCase {
 
     let cipherText1 = try publicKey.encrypt(plainText: plainText, padding: .OAEP)
 
-    let encodedPublicKey = try self.publicKey.encode(class: kSecAttrKeyClassPublic)
+    let encodedPublicKey = try publicKey.encode(class: kSecAttrKeyClassPublic)
     let decodedPublicKey = try SecKey.decode(fromData: encodedPublicKey, type: kSecAttrKeyTypeRSA, class: kSecAttrKeyClassPublic)
 
     let cipherText2 = try decodedPublicKey.encrypt(plainText: plainText, padding: .OAEP)
 
-    let encodedPrivateKey = try self.privateKey.encode(class: kSecAttrKeyClassPrivate)
+    let encodedPrivateKey = try privateKey.encode(class: kSecAttrKeyClassPrivate)
     let decodedPrivateKey = try SecKey.decode(fromData: encodedPrivateKey, type: kSecAttrKeyTypeRSA, class: kSecAttrKeyClassPrivate)
 
     XCTAssertEqual(plainText, try decodedPrivateKey.decrypt(cipherText: cipherText1, padding: .OAEP))

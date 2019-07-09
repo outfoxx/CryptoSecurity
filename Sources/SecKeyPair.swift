@@ -2,8 +2,10 @@
 //  SecKeyPair.swift
 //  CryptoSecurity
 //
-//  Created by Kevin Wooten on 7/29/16.
-//  Copyright © 2016 Outfox, Inc. All rights reserved.
+//  Copyright © 2019 Outfox, inc.
+//
+//
+//  Distributed under the MIT License, See LICENSE for details.
 //
 
 import Foundation
@@ -20,7 +22,7 @@ public enum SecKeyPairError: Error {
     let error = error as NSError
     return NSError(domain: error.domain, code: error.code, userInfo: [
       NSLocalizedDescriptionKey: message,
-      "status": Int(status) as NSNumber
+      "status": Int(status) as NSNumber,
     ])
   }
 }
@@ -59,7 +61,7 @@ public class SecKeyPairFactory {
 
     let attrs: [String: Any] = [
       kSecAttrKeyType as String: type.systemValue,
-      kSecAttrKeySizeInBits as String: keySize
+      kSecAttrKeySizeInBits as String: keySize,
     ]
 
     var publicKey: SecKey?, privateKey: SecKey?
@@ -81,7 +83,7 @@ public class SecKeyPairFactory {
 }
 
 
-public class SecKeyPair : Codable {
+public class SecKeyPair: Codable {
 
   public let privateKey: SecKey
   public let publicKey: SecKey
@@ -213,7 +215,7 @@ public class SecKeyPair : Codable {
     return try encodedPublicKey() == keyData
   }
 
-  enum CodingKeys : CodingKey {
+  enum CodingKeys: CodingKey {
     case `public`
     case `private`
   }

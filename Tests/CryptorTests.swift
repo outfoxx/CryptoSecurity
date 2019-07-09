@@ -2,12 +2,14 @@
 //  CryptorTests.swift
 //  CryptoSecurity
 //
-//  Created by Kevin Wooten on 7/28/16.
-//  Copyright © 2016 Outfox, Inc. All rights reserved.
+//  Copyright © 2019 Outfox, inc.
+//
+//
+//  Distributed under the MIT License, See LICENSE for details.
 //
 
-import XCTest
 @testable import CryptoSecurity
+import XCTest
 
 
 class CryptorTests: XCTestCase {

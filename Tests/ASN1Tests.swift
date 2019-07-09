@@ -2,14 +2,16 @@
 //  ASN1Tests.swift
 //  CryptoSecurity
 //
-// Created by Kevin Wooten on 2/28/17.
-// Copyright (c) 2017 Outfox, Inc. All rights reserved.
+//  Copyright © 2019 Outfox, inc.
+//
+//
+//  Distributed under the MIT License, See LICENSE for details.
 //
 
+@testable import CryptoSecurity
 import Foundation
 import Security
 import XCTest
-@testable import CryptoSecurity
 
 
 class ASN1Tests: XCTestCase {
