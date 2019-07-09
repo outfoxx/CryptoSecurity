@@ -82,7 +82,7 @@ public class SecKeyPairFactory {
 }
 
 
-public class SecKeyPair {
+public class SecKeyPair : Codable {
 
   public let privateKey: SecKey
   public let publicKey: SecKey
@@ -92,7 +92,7 @@ public class SecKeyPair {
     self.publicKey = publicKey
   }
 
-  public convenience init?(privateKeyRef: Data, publicKeyRef: Data) throws {
+  public convenience init(privateKeyRef: Data, publicKeyRef: Data) throws {
 
     let privateKey = try SecKey.load(persistentReference: privateKeyRef)
     let publicKey = try SecKey.load(persistentReference: publicKeyRef)
@@ -212,6 +212,23 @@ public class SecKeyPair {
     let keyData = try certificate.publicKeyValidated(trustedCertificates: trustedCertificates).encode(class: kSecAttrKeyClassPublic)
 
     return try encodedPublicKey() == keyData
+  }
+
+  enum CodingKeys : CodingKey {
+    case `public`
+    case `private`
+  }
+
+  public required init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: Self.CodingKeys.self)
+    privateKey = try SecKey.load(persistentReference: container.decode(Data.self, forKey: .private))
+    publicKey = try SecKey.load(persistentReference: container.decode(Data.self, forKey: .public))
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: Self.CodingKeys.self)
+    try container.encode(privateKey.persistentReference(), forKey: .private)
+    try container.encode(publicKey.persistentReference(), forKey: .public)
   }
 
 }
