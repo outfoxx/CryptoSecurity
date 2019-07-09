@@ -8,6 +8,7 @@
 
 import Foundation
 import Security
+import Regex
 @_exported import CryptoSecurityObjC
 
 
@@ -164,40 +165,46 @@ public extension SecCertificate {
 
     let bundle = bundle ?? Bundle.main
 
-    if let loaded = try loadDER(resourceName: resourceName, inDirectory: dir, in: bundle) {
+    if let loaded = try load(derResourceName: resourceName, inDirectory: dir, in: bundle) {
       return [loaded]
     }
 
-    if let loaded = try loadPEM(resourceName: resourceName, inDirectory: dir, in: bundle) {
+    if let loaded = try load(pemResourceName: resourceName, inDirectory: dir, in: bundle) {
       return loaded
     }
 
     return nil
   }
 
-  static func loadDER(resourceName: String, inDirectory dir: String? = nil, in bundle: Bundle? = nil) throws -> SecCertificate? {
+  static func load(derResourceName: String, inDirectory dir: String? = nil, in bundle: Bundle? = nil) throws -> SecCertificate? {
 
     let bundle = bundle ?? Bundle.main
 
-    guard let certURL = bundle.url(forResource: resourceName, withExtension: "crt", subdirectory: dir) else {
+    guard let certURL = bundle.url(forResource: derResourceName, withExtension: "crt", subdirectory: dir) else {
       return nil
     }
 
-    guard
-      let certData = try? Data(contentsOf: certURL),
-      let cert = SecCertificateCreateWithData(nil, certData as CFData)
-    else {
+    guard let certData = try? Data(contentsOf: certURL) else {
+      throw SecCertificateError.loadFailed
+    }
+
+    return try load(der: certData)
+  }
+
+  static func load(der: Data) throws -> SecCertificate {
+
+    guard let cert = SecCertificateCreateWithData(nil, der as CFData) else {
       throw SecCertificateError.loadFailed
     }
 
     return cert
   }
 
-  static func loadPEM(resourceName: String, inDirectory dir: String? = nil, in bundle: Bundle? = nil) throws -> [SecCertificate]? {
+  static func load(pemResourceName: String, inDirectory dir: String? = nil, in bundle: Bundle? = nil) throws -> [SecCertificate]? {
 
     let bundle = bundle ?? Bundle.main
 
-    guard let certsURL = bundle.url(forResource: resourceName, withExtension: "pem", subdirectory: dir) else {
+    guard let certsURL = bundle.url(forResource: pemResourceName, withExtension: "pem", subdirectory: dir) else {
       return nil
     }
 
@@ -208,40 +215,28 @@ public extension SecCertificate {
       throw SecCertificateError.loadFailed
     }
 
-    var certs = [SecCertificate]()
+    return try load(pem: certsPEM)
+  }
 
-    // swiftlint:disable:next force_try
-    let regex = try! NSRegularExpression(pattern: "-----BEGIN CERTIFICATE-----\\s*([a-zA-Z0-9\\s/+]+=*)\\s*-----END CERTIFICATE-----", options: [])
-    var error : Error? = nil
+  private static let pemRegex = Regex(#"-----BEGIN CERTIFICATE-----\s*([a-zA-Z0-9\s/+]+=*)\s*-----END CERTIFICATE-----"#)
+  private static let pemWhitespaceRegex = Regex(#"[\n\t\s]+"#)
 
-    regex.enumerateMatches(in: certsPEM, options: [], range: NSRange(location: 0, length: certsPEM.count)) { result, _, stop in
+  static func load(pem: String) throws -> [SecCertificate] {
 
-      let result = result!
-      let captured = result.range(at: 1)
+    return try pemRegex.allMatches(in: pem)
+      .map { match in
 
-      guard
-        let range = Range(captured, in: certsPEM),
-        let certData = NSData(base64Encoded: String(certsPEM[range]), options: [.ignoreUnknownCharacters])
-      else {
-        error = SecCertificateError.loadFailed
-        stop.pointee = true
-        return
+        guard
+          let capture = match.captures.first,
+          let base64Data = capture?.replacingAll(matching: pemWhitespaceRegex, with: ""),
+          let data = Data(base64Encoded: base64Data),
+          let cert = SecCertificateCreateWithData(nil, data as CFData)
+        else {
+          throw SecCertificateError.loadFailed
+        }
+
+        return cert
       }
-
-      guard let cert = SecCertificateCreateWithData(nil, certData) else {
-        error = SecCertificateError.loadFailed
-        stop.pointee = true
-        return
-      }
-
-      certs.append(cert)
-    }
-
-    if let error = error {
-      throw error
-    }
-
-    return certs
   }
 
 }
