@@ -19,11 +19,12 @@ let package = Package(
       targets: ["CryptoSecurityObjC"]),
   ],
   dependencies: [
+    .package(url: "https://github.com/sharplet/Regex.git", from: "2.1.0"),
   ],
   targets: [
     .target(
       name: "CryptoSecurity",
-      dependencies: ["CryptoSecurityObjC"],
+      dependencies: ["CryptoSecurityObjC", "Regex"],
       path: "Sources"),
     .target(
       name: "CryptoSecurityObjC",
